@@ -6,11 +6,11 @@ export default function JobCard({ job, onDelete }) {
   return (
     <div className="glass rounded-3xl p-5 flex flex-col gap-2 hover:scale-105 transition-all ease-in-out duration-200">
       <div className="flex justify-between gap-4">
-        <div>
-          <h3 className="text-2xl font-semibold ">{job.role}</h3>
-          <p className="text-white/70">{job.company}</p>
+        <div className="content-center">
+          <h3 className="text-xl sm:text-2xl font-semibold ">{job.role}</h3>
+          <p className="text-white/80">{job.company}</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center flex-col sm:flex-row gap-2">
           <span className="px-3 py-1 rounded-xl border border-white/20 text-sm text-white/80">
             {job.status}
           </span>
@@ -32,7 +32,7 @@ export default function JobCard({ job, onDelete }) {
       </div>
 
       {job.location ? (
-        <p className="text-white/70 text-sm">📍 {job.location}</p>
+        <p className="text-white/70 text-sm">📍{job.location}</p>
       ) : null}
 
       {job.link ? (
