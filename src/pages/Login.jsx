@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../firebase/auth";
 import { useState } from "react";
 
-export default function login() {
+export default function Login() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
