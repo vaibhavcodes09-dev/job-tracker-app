@@ -9,9 +9,14 @@ import { deleteJob } from "../firebase/jobs";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const [jobs, setJob] = useState("");
+  const [jobs, setJob] = useState([]);
   const [loadingJobs, setLoadingJob] = useState(false);
   const { authUser } = useAuth();
+
+  const appliedCount = jobs.filter((j)=>j.status === "Applied").length;
+  const interviewCount = jobs.filter((j)=>j.status === "Interviewed").length;
+  const selectedCount = jobs.filter((j)=>j.status === "Selected").length;
+  const rejectedCount = jobs.filter((j)=>j.status === "Rejected").length;
 
   useEffect(() => {
     const loadJob = async () => {
@@ -58,19 +63,19 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="glass rounded-3xl p-5">
             <h2 className="text-lg font-semibold">Applied</h2>
-            <p className="text-white/80 text-2xl font-semibold">0</p>
+            <p className="text-white/80 text-2xl font-semibold">{appliedCount}</p>
           </div>
           <div className="glass rounded-3xl p-5">
             <h2 className="text-lg font-semibold">Interview</h2>
-            <p className="text-white/80 text-2xl font-semibold">0</p>
+            <p className="text-white/80 text-2xl font-semibold">{interviewCount}</p>
           </div>
           <div className="glass rounded-3xl p-5">
             <h2 className="text-lg font-semibold">Selected</h2>
-            <p className="text-white/80 text-2xl font-semibold">0</p>
+            <p className="text-white/80 text-2xl font-semibold">{selectedCount}</p>
           </div>
           <div className="glass rounded-3xl p-5">
             <h2 className="text-lg font-semibold">Rejected</h2>
-            <p className="text-white/80 text-2xl font-semibold">0</p>
+            <p className="text-white/80 text-2xl font-semibold">{rejectedCount}</p>
           </div>
         </div>
         <div className="glass p-5 rounded-3xl">

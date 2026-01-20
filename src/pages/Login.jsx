@@ -34,7 +34,7 @@ export default function Login() {
 
   return (
     <div className="bg-black min-h-screen text-white flex items-center justify-center bg-grid">
-      <div className="glass w-full max-w-md rounded-2xl p-6">
+      <div className="glass w-full max-w-md rounded-2xl sm:m-0 mx-6 p-6">
         <h2 className="text-3xl font-bold">Welcome Back</h2>
         <p className="text-white/50 mt-1">Login to Job Tracker</p>
         <div className="mt-4 space-y-4">

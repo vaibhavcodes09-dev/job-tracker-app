@@ -42,7 +42,7 @@ export default function Signup() {
 
   return (
     <div className="bg-black min-h-screen text-white flex items-center justify-center bg-grid">
-      <div className="glass w-full max-w-md rounded-2xl p-6">
+      <div className="glass w-full max-w-md rounded-2xl sm:m-0 mx-4 p-6">
         <h2 className="text-3xl font-bold">Create Account</h2>
         <p className="text-white/50 mt-1">
           Start Tracking your job applications
