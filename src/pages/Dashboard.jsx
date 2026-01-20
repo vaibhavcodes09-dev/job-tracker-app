@@ -6,17 +6,18 @@ import { getJobsByUser } from "../firebase/jobs";
 import JobCard from "./JobCard";
 import { deleteJob } from "../firebase/jobs";
 
-
 export default function Dashboard() {
   const navigate = useNavigate();
   const [jobs, setJob] = useState([]);
   const [loadingJobs, setLoadingJob] = useState(false);
   const { authUser } = useAuth();
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
-  const appliedCount = jobs.filter((j)=>j.status === "Applied").length;
-  const interviewCount = jobs.filter((j)=>j.status === "Interviewed").length;
-  const selectedCount = jobs.filter((j)=>j.status === "Selected").length;
-  const rejectedCount = jobs.filter((j)=>j.status === "Rejected").length;
+  const appliedCount = jobs.filter((j) => j.status === "Applied").length;
+  const interviewCount = jobs.filter((j) => j.status === "Interview").length;
+  const selectedCount = jobs.filter((j) => j.status === "Selected").length;
+  const rejectedCount = jobs.filter((j) => j.status === "Rejected").length;
 
   useEffect(() => {
     const loadJob = async () => {
@@ -39,6 +40,16 @@ export default function Dashboard() {
     // update UI immediately
     setJob((prev) => prev.filter((j) => j.id !== jobId));
   };
+
+  const filteredJobs = jobs.filter((job) => {
+    const text = `${job.company} ${job.role}`.toLowerCase();
+    const matchesSearch = text.includes(search.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "All" ? true : job.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
 
   return (
     <div className="min-h-screen bg-black text-white space-y-4 px-4 py-3">
@@ -63,21 +74,60 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="glass rounded-3xl p-5">
             <h2 className="text-lg font-semibold">Applied</h2>
-            <p className="text-white/80 text-2xl font-semibold">{appliedCount}</p>
+            <p className="text-white/80 text-2xl font-semibold">
+              {appliedCount}
+            </p>
           </div>
           <div className="glass rounded-3xl p-5">
             <h2 className="text-lg font-semibold">Interview</h2>
-            <p className="text-white/80 text-2xl font-semibold">{interviewCount}</p>
+            <p className="text-white/80 text-2xl font-semibold">
+              {interviewCount}
+            </p>
           </div>
           <div className="glass rounded-3xl p-5">
             <h2 className="text-lg font-semibold">Selected</h2>
-            <p className="text-white/80 text-2xl font-semibold">{selectedCount}</p>
+            <p className="text-white/80 text-2xl font-semibold">
+              {selectedCount}
+            </p>
           </div>
           <div className="glass rounded-3xl p-5">
             <h2 className="text-lg font-semibold">Rejected</h2>
-            <p className="text-white/80 text-2xl font-semibold">{rejectedCount}</p>
+            <p className="text-white/80 text-2xl font-semibold">
+              {rejectedCount}
+            </p>
           </div>
         </div>
+        <div className="glass rounded-3xl p-5 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by company or role..."
+            className="w-full sm:w-[60%] rounded-2xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:border-white/30"
+          />
+
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="w-full sm:w-[40%] rounded-2xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:border-white/30"
+          >
+            <option value="All" className="bg-black">
+              All
+            </option>
+            <option value="Applied" className="bg-black">
+              Applied
+            </option>
+            <option value="Interview" className="bg-black">
+              Interview
+            </option>
+            <option value="Selected" className="bg-black">
+              Selected
+            </option>
+            <option value="Rejected" className="bg-black">
+              Rejected
+            </option>
+          </select>
+        </div>
+
         <div className="glass p-5 rounded-3xl">
           <h2 className="text-2xl font-semibold ">Applications</h2>
           <div className="mt-5 space-y-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
@@ -90,7 +140,7 @@ export default function Dashboard() {
                 No jobs yet.
               </div>
             ) : (
-              jobs.map((job) => (
+              filteredJobs.map((job) => (
                 <JobCard key={job.id} job={job} onDelete={handleDelete} />
               ))
             )}
